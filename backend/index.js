@@ -12,7 +12,11 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.text())
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors({
+    origin: ["http://localhost:3000"],  //eh jo likhya this is to get data from cookie
+    methods: ['POST', 'GET'],
+    credentials: true
+}));
 
 try {
     mongoose.connect(url);
@@ -31,7 +35,7 @@ app.post('/signin', async (req, res) => {
         password,
         income,
         expense } = req.body
-    // console.log(req.body)
+    console.log(req.body)
     try {
         const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
@@ -43,6 +47,28 @@ app.post('/signin', async (req, res) => {
     }
     catch (e) {
         res.status(500).json(e)
+    }
+})
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    // console.log("req.body",req.body)
+    try {
+        const user = await UserModel.find({ email })
+        // console.log("user",user[0].email)
+        if (user[0].password === password) {
+            console.log("valid user in route")
+            const token = jwt.sign({ ID: user._id }, 'jwt-key')
+            res.cookie('token', token, { httpOnly: true });
+            res.status(200).json({ user: user,
+                 msg: "Successful" })
+        }
+        else {
+            res.status(400).json({msg:"the password is incorrect"})
+        }
+    }
+    catch (e) {
+        res.status(401).json(e)
     }
 })
 
