@@ -4,6 +4,7 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser')
 
+const TransactionModel = require('./model/Transaction')
 const UserModel = require('./model/User')
 const app = express()
 const port = 5000
@@ -60,17 +61,35 @@ app.post('/login', async (req, res) => {
             console.log("valid user in route")
             const token = jwt.sign({ ID: user._id }, 'jwt-key')
             res.cookie('token', token, { httpOnly: true });
-            res.status(200).json({ user: user,
-                 msg: "Successful" })
+            res.status(200).json({
+                user: user,
+                msg: "Successful"
+            })
         }
         else {
-            res.status(400).json({msg:"the password is incorrect"})
+            res.status(400).json({ msg: "the password is incorrect" })
         }
     }
     catch (e) {
         res.status(401).json(e)
     }
 })
+
+
+app.post('/addtransaction', async (req, res) => {
+
+    try {
+        console.log(req.body)      
+        const transaction = await TransactionModel.create({ ...req.body });
+        console.log("transaction", transaction)
+        res.status(200).json(transaction)
+    } catch (e) {
+        console.log('e: ', e.message);
+        console.log('e.message: ', e.message);
+        res.status(500).json(e.message)
+    }
+})
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
