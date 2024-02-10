@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser')
 
 const TransactionModel = require('./model/Transaction')
 const UserModel = require('./model/User')
+const CategoryModel=require('./model/Category')
 const app = express()
 const port = 5000
 const url = "mongodb+srv://keshavsainikesu:Imhater369@cluster0.yy3go80.mongodb.net/?retryWrites=true&w=majority"
@@ -84,12 +85,23 @@ app.post('/addtransaction', async (req, res) => {
         console.log("transaction", transaction)
         res.status(200).json(transaction)
     } catch (e) {
-        console.log('e: ', e.message);
         console.log('e.message: ', e.message);
         res.status(500).json(e.message)
     }
 })
 
+app.post('/category',async(req,res)=>{
+    try{
+        console.log("reex",req.body) 
+        const data=req.body.data   
+        const cate = await CategoryModel.create({category: data });
+        console.log("transaction", cate)
+        res.status(200).json(cate)
+    }catch(e){
+        console.log('e.message: ', e.message);
+        res.status(500).json(e.message)
+    }
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

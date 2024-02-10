@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { uploadExpense } from '../../Redux/Slice/PostExpense';
 
 function AddExpense() {
     const [category, setCategory] = useState();
@@ -6,12 +9,31 @@ function AddExpense() {
     const [name, setName] = useState();
     const [amount, setAmount] = useState();
     const [date, setDate] = useState();
-
-    const handleformsubmit = (e) => {
+    const dispatch = useDispatch();
+    
+    const id = useSelector(state => state.login.id)
+    const success = useSelector(state => state.uploadexpense.success)
+    const handleformsubmit = async (e) => {
         console.log("Handleformsubmit")
         e.preventDefault();
-        console.log(name,amount,date,type,category)
+        console.log("iddddddddddd",id)
+        console.log(name, amount, date, type, category)
+        const data = {
+            name: name,
+            category: category,
+            type: type,
+            amount: amount,
+            date: date,
+            userid: id
+        }
+        console.log(data)
+        dispatch(uploadExpense(data))
     }
+    useEffect(()=>{
+        if(success){
+            alert("successfully added")
+        }
+    },[success])
 
     return (
         <form action="" onSubmit={handleformsubmit}>

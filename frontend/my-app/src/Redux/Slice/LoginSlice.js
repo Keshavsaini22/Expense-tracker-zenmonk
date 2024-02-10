@@ -4,6 +4,7 @@ const initialState = {
     loading: false,
     error: null,
     msg: "",
+    id:null,
     user: null,
     success: false
 }
@@ -35,11 +36,13 @@ const loginSlice = createSlice({
                 state.success = false;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                console.log(action.payload)
+                console.log("action.payload",action.payload)
                 state.loading = false
                 state.error = null
                 state.success = true;
                 state.user = action.payload.user
+                state.id=action.payload.user[0]._id
+                console.log("action.payload.user[0]._id",action.payload.user[0]._id)
                 state.msg = action.payload.msg
             })
             .addCase(loginUser.rejected, (state, action) => {

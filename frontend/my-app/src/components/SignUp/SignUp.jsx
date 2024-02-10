@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import validator from 'validator'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +29,7 @@ function SignUp() {
 
     }
 
+
     const addData = async (e) => {
         console.log("adddata")
         e.preventDefault();
@@ -45,10 +46,8 @@ function SignUp() {
                 // const response = await axios.post('http://localhost:5000/signin', data);
                 dispatch(signUpUser(data))
                 // console.log("res", response);
-                if (success === true) {
-                    alert('Successful SignIn')
-                    navigate('/login');
-                }
+                console.log("success", success)
+
 
             }
             catch (error) {
@@ -62,7 +61,12 @@ function SignUp() {
         }
     }
 
-
+    useEffect(() => {
+        if (success === true) {
+            alert('Successful SignIn')
+            navigate('/login');
+        }
+    }, [success])
     return (
         <form action="" onSubmit={addData}>
             <div className="signup-container">

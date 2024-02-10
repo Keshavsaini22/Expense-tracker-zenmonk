@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../Redux/Slice/LoginSlice'
@@ -35,10 +35,7 @@ function Login() {
         try {
             dispatch(loginUser(inpval))
             console.log("login success", success)
-            if (success === true) {
-                alert("Success login")
-                navigate("/home")
-            }
+
             // const response = await axios.post('http://localhost:5000/logininfo', inpval);
             // console.log("res", response);
             // if (response.status === 200) {
@@ -56,6 +53,13 @@ function Login() {
             alert('Error:', error);
         }
     }
+
+    useEffect(() => {
+        if (success === true) {
+            alert("Success login")
+            navigate("/home")
+        }
+    }, [success])
 
 
     return (
