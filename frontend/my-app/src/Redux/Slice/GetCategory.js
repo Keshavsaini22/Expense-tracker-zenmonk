@@ -8,34 +8,33 @@ const initialState = {
     success: false
 }
 
-export const uploadCategory = createAsyncThunk('uploadcate/uploadCate',
-    async (input) => {
-        console.log("input", input)
-        const res = await axios.post('http://localhost:5000/category', { data: input })
-        console.log(res.data);
-        const data = res.data;
-        return data;
-    }
-)
+export const getCategory = createAsyncThunk('getcate/getCate',
+    async()=>{
+        console.log("helloooo")
+        const res=await axios.get('http://localhost:5000/category')
+        const data=res.data
+        // console.log("data in cat fxn",data)
+        return data
+    })
 
-export const uploadCategorySlice = createSlice({
-    name: 'uploadcate',
+export const getCategorySlice = createSlice({
+    name: 'getcate',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(uploadCategory.pending, (state) => {
+        builder.addCase(getCategory.pending, (state) => {
             state.isLoading = true
         })
-            .addCase(uploadCategory.fulfilled, (state, action) => {
+            .addCase(getCategory.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.contents = action.payload
                 state.success = true
                 console.log("action.payload", action.payload)
             })
-            .addCase(uploadCategory.rejected, (state, action) => {
+            .addCase(getCategory.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.error.message
             })
     }
 })
-export default uploadCategorySlice.reducer
+export default getCategorySlice.reducer

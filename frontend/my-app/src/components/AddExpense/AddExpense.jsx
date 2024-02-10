@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadExpense } from '../../Redux/Slice/PostExpense';
+import { getCategory } from '../../Redux/Slice/GetCategory';
 
 function AddExpense() {
     const [category, setCategory] = useState();
@@ -13,6 +14,8 @@ function AddExpense() {
     
     const id = useSelector(state => state.login.id)
     const success = useSelector(state => state.uploadexpense.success)
+    const allcate = useSelector(state => state.getcate.contents)
+
     const handleformsubmit = async (e) => {
         console.log("Handleformsubmit")
         e.preventDefault();
@@ -30,12 +33,16 @@ function AddExpense() {
         dispatch(uploadExpense(data))
     }
     useEffect(()=>{
+        dispatch(getCategory())
+        console.log("new cate",allcate)
         if(success){
             alert("successfully added")
         }
     },[success])
-
+ 
     return (
+        
+        <>
         <form action="" onSubmit={handleformsubmit}>
             <div className="addexpense">
                 <div className="title">
@@ -69,6 +76,10 @@ function AddExpense() {
                             <option value="Entertainment">Entertainment</option>
                             <option value="Others">Others</option>
                         </optgroup>
+                        <optgroup label="New Category">
+                        {allcate?.map((cate)=>( <option value={cate.category}>{cate.category}</option>))}
+                           
+                        </optgroup>
                     </select>
                 </div>
                 <div className="expensetype">
@@ -85,8 +96,10 @@ function AddExpense() {
                 </div>
                 <button type='submit'>Submit</button>
             </div>
-
         </form>
+
+        
+        </>
     )
 }
 

@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser')
 
 const TransactionModel = require('./model/Transaction')
 const UserModel = require('./model/User')
-const CategoryModel=require('./model/Category')
+const CategoryModel = require('./model/Category')
 const app = express()
 const port = 5000
 const url = "mongodb+srv://keshavsainikesu:Imhater369@cluster0.yy3go80.mongodb.net/?retryWrites=true&w=majority"
@@ -80,7 +80,7 @@ app.post('/login', async (req, res) => {
 app.post('/addtransaction', async (req, res) => {
 
     try {
-        console.log(req.body)      
+        console.log(req.body)
         const transaction = await TransactionModel.create({ ...req.body });
         console.log("transaction", transaction)
         res.status(200).json(transaction)
@@ -90,14 +90,38 @@ app.post('/addtransaction', async (req, res) => {
     }
 })
 
-app.post('/category',async(req,res)=>{
-    try{
-        console.log("reex",req.body) 
-        const data=req.body.data   
-        const cate = await CategoryModel.create({category: data });
+app.get('/expenses', async (req, res) => {
+    try {
+
+        const data = await TransactionModel.find({});
+        console.log("get all transaction", data)
+        res.status(200).json(data)
+    } catch (e) {
+        console.log('e.message: ', e.message);
+        res.status(500).json(e.message)
+    }
+})
+
+app.post('/category', async (req, res) => {
+    try {
+        console.log("reex", req.body)
+        const data = req.body.data
+        const cate = await CategoryModel.create({ category: data });
         console.log("transaction", cate)
         res.status(200).json(cate)
-    }catch(e){
+    } catch (e) {
+        console.log('e.message: ', e.message);
+        res.status(500).json(e.message)
+    }
+})
+
+app.get('/category', async (req, res) => {
+    try {
+
+        const cate = await CategoryModel.find({});
+        console.log("transaction", cate)
+        res.status(200).json(cate)
+    } catch (e) {
         console.log('e.message: ', e.message);
         res.status(500).json(e.message)
     }
