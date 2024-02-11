@@ -4,14 +4,15 @@ import { uploadCategory } from '../../Redux/Slice/PostCategory';
 
 
 function AddCategory() {
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState();
     const dispatch = useDispatch();
     const success = useSelector(state => state.uploadcate.success)
-    const handleFormSubmit = (e) => {
-        e.preventDefault()
+    const handleAddcateSubmit = (e) => {
+        e.preventDefault();
         console.log(category)
+        if(category)
         dispatch(uploadCategory(category));
-
+    else alert("Add something")
     }
     useEffect(() => {
         if (success) {
@@ -19,7 +20,7 @@ function AddCategory() {
         }
     }, [success])
     return (
-        <form action="" onSubmit={handleFormSubmit}>
+        <form action="" onSubmit={handleAddcateSubmit}>
             <div>
                 <input type="text" name={category} value={category} id="" onChange={(e) => setCategory(e.target.value)} />
                 <button type="submit">Add </button>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadExpense } from '../../Redux/Slice/PostExpense';
 import { getCategory } from '../../Redux/Slice/GetCategory';
+import { uploadCategory } from '../../Redux/Slice/PostCategory';
 
 function AddExpense() {
     const [category, setCategory] = useState();
@@ -11,7 +12,7 @@ function AddExpense() {
     const [amount, setAmount] = useState();
     const [date, setDate] = useState();
     const dispatch = useDispatch();
-    
+
     const id = useSelector(state => state.login.id)
     const success = useSelector(state => state.uploadexpense.success)
     const allcate = useSelector(state => state.getcate.contents)
@@ -33,10 +34,10 @@ function AddExpense() {
         dispatch(uploadExpense(data))
     }
     useEffect(()=>{
-        dispatch(getCategory())
+        // dispatch(getCategory())
         console.log("new cate",allcate)
         if(success){
-            alert("successfully added")
+            alert("successfully added expense")
         }
     },[success])
  
@@ -77,8 +78,7 @@ function AddExpense() {
                             <option value="Others">Others</option>
                         </optgroup>
                         <optgroup label="New Category">
-                        {allcate?.map((cate)=>( <option value={cate.category}>{cate.category}</option>))}
-                           
+                        {allcate?.map((cate)=>( <option value={cate.category}>{cate.category}</option>))}                           
                         </optgroup>
                     </select>
                 </div>

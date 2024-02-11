@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Login from '../components/Login/Login'
 import SignUp from '../components/SignUp/SignUp'
 import Home from '../components/Home/Home'
+import AddExpense from '../components/AddExpense/AddExpense'
 
 
 function AllRoutes() {
@@ -13,6 +14,8 @@ function AllRoutes() {
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<SignUp />} />
       <Route path='/home' element={<Home />} />
+      <Route path='/add' element={<AddExpense/>} />
+
       {/* <Route path='/product' element={<ProductPage/>}/>
         <Route path='/shop' element={<ListingPage/>}/>
         <Route path='/men' element={<LandingPage/>}/>
