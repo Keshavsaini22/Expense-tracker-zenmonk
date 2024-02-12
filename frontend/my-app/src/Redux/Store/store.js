@@ -4,6 +4,7 @@ import loginSlice from "../Slice/LoginSlice";
 import uploadExpenseSlice from "../Slice/PostExpense";
 import  uploadCategorySlice  from "../Slice/PostCategory";
 import  getCategorySlice  from "../Slice/GetCategory";
+import  getExpenseSlice  from "../Slice/GetExpense";
 
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
         uploadexpense: uploadExpenseSlice,
         uploadcate:uploadCategorySlice,
         getcate: getCategorySlice,
+        getexpense: getExpenseSlice,
     },
     // middleware: () => new Tuple(additionalMiddleware, logger),
 })

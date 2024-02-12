@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getCategory } from '../../Redux/Slice/GetCategory';
 import { uploadCategory } from '../../Redux/Slice/PostCategory';
 import { useNavigate } from 'react-router-dom';
-
+import { MdDelete } from "react-icons/md";
+import { FaEdit, FaSearch } from "react-icons/fa";
+import { getExpenses } from '../../Redux/Slice/GetExpense';
 
 
 
 function Home() {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const [income, setincome] = useState(200)
   const [expense, setexpense] = useState(20)
   const [filtertype, setfiltertype] = useState()
@@ -18,34 +20,35 @@ function Home() {
   const [addcategory, setaddCategory] = useState();
   const successofaddcate = useSelector(state => state.uploadcate.success)
   const [openAddexpense, setopenAddexpense] = useState(false);
- 
- 
 
-  
-  const handleAddExpense= ()=>{
+
+
+
+  const handleAddExpense = () => {
     console.log("first")
     setopenAddexpense(!openAddexpense)
-   
+
   }
   const allcate = useSelector(state => state.getcate.contents)
   const dispatch = useDispatch();
-
+  const allexpenses=useSelector(state=>state.getexpense.content)
   const handleAddcateSubmit = (e) => {
     e.preventDefault();
     console.log(addcategory)
-    if (addcategory)
-     { dispatch(uploadCategory(addcategory));
+    if (addcategory) {
+      dispatch(uploadCategory(addcategory));
       alert("successfully added cate")
     }
     else alert("Add something")
 
   }
   useEffect(() => {
+    dispatch(getExpenses())
     dispatch(getCategory())
-    if(openAddexpense)
-    navigate('/add')
+    if (openAddexpense)
+      navigate('/add')
 
-  }, [successofaddcate,openAddexpense])
+  }, [successofaddcate, openAddexpense])
 
 
 
@@ -110,9 +113,22 @@ function Home() {
         </div>
 
         <div className="addexpense">
-        <button onClick={handleAddExpense}>Add Expense</button>
+          <button onClick={handleAddExpense}>Add Expense</button>
         </div>
       </div>
+      <table className="allexpense">
+        <tr>
+          <th>Name</th>
+          <th className='price-cell'>
+            <div>Category</div>
+          </th>
+          <th>
+            <div>Amount</div>
+          </th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </table>
     </>
   )
 }
